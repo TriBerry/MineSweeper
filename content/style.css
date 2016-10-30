@@ -1,0 +1,79 @@
+body {
+	
+	background: #f1f1f1;
+	text-align: center;
+	font-family: Segoe UI Light;
+	
+}
+
+
+#grid {
+
+	margin: 40px auto;
+
+}
+
+table, tr, td {
+
+	border: 1px solid black;
+	border-collapse: collapse;
+
+}
+
+td {
+ 
+	width: 30px;
+	height: 30px;
+	background: white;
+
+}
+
+/* --------------------- */
+
+#notif-box {
+	
+	width: 39%;
+	border: 1px solid black;
+	border-radius: 15px;
+	background: white;
+	height: 100px;
+	margin: 0 auto;
+	font-size: 24px;
+}
+
+/* --------------------- */
+
+
+.white {
+
+	background: white;
+
+}
+
+.nearby1 { background: yellow; }
+
+.nearby2 { background: orange; }
+
+.nearby3 { background: red; }
+
+.nearby4 { background: blue; }
+
+.nearby5 { background: purple; }
+
+.nearby6 { background: pink; }
+
+.nearby7 { background: Magenta; }
+
+.nearby8 { background: Maroon; }
+
+.mine {
+	
+	background: black;
+	
+}
+.hidden {
+
+	background: LightGray;
+	font-size: 0;
+
+}
