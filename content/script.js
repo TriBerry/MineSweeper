@@ -69,7 +69,7 @@ for (var i = 0; i < cellCount; i++) {
 	// Booleans for AVAILABLE directions
 	
 	var north = cell > gridSize;               		// not 8, 7, 6, 5, 4, 3, 2, 1
-	var south = cell < cellCount - gridSize + 1;	// not 57, 58, 59, 60, 61, 62, 63, 64
+	var south = cell < cellCount - gridSize + 1;		// not 57, 58, 59, 60, 61, 62, 63, 64
 	var east = cell % gridSize !== 0;          		// not 8, 16, 24, 32, 40, 48, 56, 64
 	var west = (cell - 1) % gridSize !== 0;    		// not 1, 9, 17, 25, 33, 41, 49, 57
 	
