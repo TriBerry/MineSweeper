@@ -44,11 +44,7 @@ td {
 /* --------------------- */
 
 
-.white {
-
-	background: white;
-
-}
+.white { background: white; }
 
 .nearby1 { background: yellow; }
 
@@ -62,15 +58,12 @@ td {
 
 .nearby6 { background: pink; }
 
-.nearby7 { background: Magenta; }
+.nearby7 { background: magenta; }
 
-.nearby8 { background: Maroon; }
+.nearby8 { background: maroon; }
 
-.mine {
-	
-	background: black;
-	
-}
+.mine { background: black; }
+
 .hidden {
 
 	background: LightGray;
