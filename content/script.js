@@ -10,119 +10,134 @@ cellCount = gridSize * gridSize;
 
 firstMineCount = mineCount; // For keeping track of remaining mines
 
+var notif = document.querySelector("#notif-text");
+
 var table = document.querySelector("#grid");
 
 table.addEventListener("mousedown", sweep);
 
-end = false;
+document.querySelector("#reset").addEventListener("click", update);
 
-var notif = document.querySelector("#notif-text");
-
-/* --- Grid creation --- */
-
-for (var i = 0; i < gridSize; i++) { 
+function update() {
 	
-	var row = table.insertRow(i);
+	end = false;
 	
-	for (var j = 0; j < gridSize; j++) {
+	table.innerHTML = ""; // Erase table
+
+	init();
+	
+}
+
+function init() {
+	
+	/* --- Grid creation --- */
+
+	for (var i = 0; i < gridSize; i++) { 
 		
-		row.insertCell(j);
+		var row = table.insertRow(i);
 		
+		for (var j = 0; j < gridSize; j++) {
+			
+			row.insertCell(j);
+			
+		}
+		
+	}
+
+	tds = document.querySelectorAll("#grid td");
+
+	/* -- -- Assign IDs -- -- */
+
+	for (var i = 0; i < cellCount; i++) {
+
+		tds[i].id = "cell" + (i + 1); // Cell1 -> Cell64
+
+	}
+
+	/* -- -- Set mines -- -- */
+
+	for (var i = 0; i < mineCount; i++) {
+		
+		var randomMine = Math.floor(Math.random() * cellCount);
+		
+		while (tds[randomMine].className === "mine") { // prevents mine on same spot
+		
+			randomMine = Math.floor(Math.random() * cellCount);
+			
+		}
+		
+		tds[randomMine].className = "mine";
+
+	}
+
+	/*  Set hints (numbers) [2 parts] */
+
+	for (var i = 0; i < cellCount; i++) { 
+
+		// [Part 1] - Loop through mines, add '1' to surrounding cells
+
+		var cell = tds[i].id.slice(4); // get number from ID
+		
+		// Booleans for AVAILABLE directions
+		
+		var north = cell > gridSize;               		// not 8, 7, 6, 5, 4, 3, 2, 1
+		var south = cell < cellCount - gridSize + 1;		// not 57, 58, 59, 60, 61, 62, 63, 64
+		var east = cell % gridSize !== 0;          		// not 8, 16, 24, 32, 40, 48, 56, 64
+		var west = (cell - 1) % gridSize !== 0;    		// not 1, 9, 17, 25, 33, 41, 49, 57
+		
+		if (tds[i].classList.contains("mine")) {
+			
+			var nearbies = " nearby nearby1";
+			
+			if (north) { tds[i - gridSize].className += nearbies; } // If north available, add nearbies there
+			if (south) { tds[i + gridSize].className += nearbies; } // etc.
+			if (east) { tds[i + 1].className += nearbies; }
+			if (west) { tds[i - 1].className += nearbies; }
+
+			if (north && west) { tds[i - gridSize - 1].className += nearbies; }
+			if (north && east) { tds[i - gridSize + 1].className += nearbies; }
+			if (south && west) { tds[i + gridSize - 1].className += nearbies; }
+			if (south && east) { tds[i + gridSize + 1].className += nearbies; }
+			
+		}
+		
+	}
+
+	for (var i = 0; i < cellCount; i++) { 
+
+		// [Part 2] Check class duplicates (nearby) and add higher numbers
+
+		if (tds[i].classList.contains("nearby") && !(tds[i].classList.contains("mine"))) {
+			
+			classCount = tds[i].classList.length
+			
+			if (classCount % 2 === 0 && classCount < 17) {
+			
+				tds[i].innerHTML = classCount / 2;
+				tds[i].className += " nearby" + classCount / 2;
+			
+			} 
+			
+		}
+		
+	}
+
+	/* Loop to hide every cell */
+
+	for (var i = 0; i < cellCount; i++) {
+
+		tds[i].className += " hidden";
+
 	}
 	
 }
 
-tds = document.querySelectorAll("#grid td");
 
-/* -- -- Assign IDs -- -- */
-
-for (var i = 0; i < cellCount; i++) {
-
-	tds[i].id = "cell" + (i + 1); // Cell1 -> Cell64
-
-}
-
-/* -- -- Set mines -- -- */
-
-for (var i = 0; i < mineCount; i++) {
-	
-	var randomMine = Math.floor(Math.random() * cellCount);
-	
-	while (tds[randomMine].className === "mine") { // prevents mine on same spot
-	
-		randomMine = Math.floor(Math.random() * cellCount);
-		
-	}
-	
-	tds[randomMine].className = "mine";
-
-}
-
-/*  Set hints (numbers) [2 parts] */
-
-for (var i = 0; i < cellCount; i++) { 
-
-	// [Part 1] - Loop through mines, add '1' to surrounding cells
-
-	var cell = tds[i].id.slice(4); // get number from ID
-	
-	// Booleans for AVAILABLE directions
-	
-	var north = cell > gridSize;               		// not 8, 7, 6, 5, 4, 3, 2, 1
-	var south = cell < cellCount - gridSize + 1;		// not 57, 58, 59, 60, 61, 62, 63, 64
-	var east = cell % gridSize !== 0;          		// not 8, 16, 24, 32, 40, 48, 56, 64
-	var west = (cell - 1) % gridSize !== 0;    		// not 1, 9, 17, 25, 33, 41, 49, 57
-	
-	if (tds[i].classList.contains("mine")) {
-		
-		var nearbies = " nearby nearby1";
-		
-		if (north) { tds[i - gridSize].className += nearbies; } // If north available, add nearbies there
-		if (south) { tds[i + gridSize].className += nearbies; } // etc.
-		if (east) { tds[i + 1].className += nearbies; }
-		if (west) { tds[i - 1].className += nearbies; }
-
-		if (north && west) { tds[i - gridSize - 1].className += nearbies; }
-		if (north && east) { tds[i - gridSize + 1].className += nearbies; }
-		if (south && west) { tds[i + gridSize - 1].className += nearbies; }
-		if (south && east) { tds[i + gridSize + 1].className += nearbies; }
-		
-	}
-	
-}
-
-for (var i = 0; i < cellCount; i++) { 
-
-	// [Part 2] Check class duplicates (nearby) and add higher numbers
-
-	if (tds[i].classList.contains("nearby") && !(tds[i].classList.contains("mine"))) {
-		
-		classCount = tds[i].classList.length
-		
-		if (classCount % 2 === 0 && classCount < 17) {
-		
-			tds[i].innerHTML = classCount / 2;
-			tds[i].className += " nearby" + classCount / 2;
-		
-		} 
-		
-	}
-	
-}
-
-/* Loop to hide every cell */
-
-for (var i = 0; i < cellCount; i++) {
-
-	tds[i].className += " hidden";
-
-}
 
 function floodFill(node) { // node is number, cellN is corresponding DOM element
 
-
 	var north = node > gridSize;               		// not 8, 7, 6, 5, 4, 3, 2, 1
-	var south = node < cellCount - gridSize + 1;		// not 57, 58, 59, 60, 61, 62, 63, 64
+	var south = node < cellCount - gridSize + 1;	// not 57, 58, 59, 60, 61, 62, 63, 64
 	var east = node % gridSize !== 0;          		// not 8, 16, 24, 32, 40, 48, 56, 64
 	var west = (node - 1) % gridSize !== 0;    		// not 1, 9, 17, 25, 33, 41, 49, 57
 		
@@ -197,9 +212,9 @@ function sweep(event) {
 	
 	if (end) {
 		
-		if (confirm("Game over, click ok to reload the page.")) {
+		if (confirm("Game over, click ok to reset.")) {
 		
-			location.reload();
+			update();
 			
 		}
 	
@@ -259,4 +274,4 @@ function sweep(event) {
 	
 }
 
-
+update();
