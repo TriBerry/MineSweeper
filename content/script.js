@@ -8,8 +8,6 @@ var mineCount = 10; // 10 / 40
 
 cellCount = gridSize * gridSize;
 
-firstMineCount = mineCount; // For keeping track of remaining mines
-
 var notif = document.querySelector("#notif-text");
 
 var table = document.querySelector("#grid");
@@ -21,6 +19,8 @@ document.querySelector("#reset").addEventListener("click", update);
 function update() {
 	
 	end = false;
+	
+	firstMineCount = mineCount; // For keeping track of remaining mines
 	
 	table.innerHTML = ""; // Erase table
 
