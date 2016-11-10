@@ -36,7 +36,7 @@ td {
 	border: 1px solid black;
 	border-radius: 15px;
 	background: white;
-	height: 100px;
+	height: 150px;
 	margin: 0 auto;
 	font-size: 24px;
 }
@@ -65,10 +65,15 @@ td {
   
 }
 
+
 /* --------------------- */
 
 
-.white { background: white; }
+.white {
+
+	background: white;
+
+}
 
 .nearby1 { background: yellow; }
 
@@ -82,12 +87,15 @@ td {
 
 .nearby6 { background: pink; }
 
-.nearby7 { background: magenta; }
+.nearby7 { background: Magenta; }
 
-.nearby8 { background: maroon; }
+.nearby8 { background: Maroon; }
 
-.mine { background: black; }
-
+.mine {
+	
+	background: black;
+	
+}
 .hidden {
 
 	background: LightGray;
