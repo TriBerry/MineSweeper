@@ -4,9 +4,9 @@ var gridSize = 8; // 8 / 16
 
 var mineCount = 10; // 10 / 40
 
-/* --- Other global variables --- */
-
 cellCount = gridSize * gridSize;
+
+var firstMineCount = mineCount;
 
 var notif = document.querySelector("#notif-text");
 
@@ -19,10 +19,14 @@ document.querySelector("#reset").addEventListener("click", update);
 function update() {
 	
 	end = false;
+
+	mineCount = 10;
 	
-	firstMineCount = mineCount; // For keeping track of remaining mines
-	
-	table.innerHTML = ""; // Erase table
+	firstMineCount = mineCount;
+		
+	notif.innerHTML = "Start by clicking any cell!";
+		
+	table.innerHTML = "";
 
 	init();
 	
@@ -131,8 +135,6 @@ function init() {
 	}
 	
 }
-
-
 
 function floodFill(node) { // node is number, cellN is corresponding DOM element
 
