@@ -1,32 +1,35 @@
 /* --- Settings --- */
 
-var gridSize = 8; // 8 / 16
+var gridSize = 8; // 8 or 16
 
-var mineCount = 10; // 10 / 40
+var mineCount = 10; // 10 or 40
 
-cellCount = gridSize * gridSize;
+/* Event-listeners & Global variables */
 
-var firstMineCount = mineCount;
+var cellCount = gridSize * gridSize; // Variable to simplify code
 
 var notif = document.querySelector("#notif-text");
-
 var table = document.querySelector("#grid");
 
 table.addEventListener("mousedown", sweep);
 
 document.querySelector("#reset").addEventListener("click", update);
 
+/* Function for setting up the game again */
+
 function update() {
 	
 	end = false;
-
-	mineCount = 10;
 	
-	firstMineCount = mineCount;
+	firstClick = true;
+
+	mineCount = 10; // Counter reset
+	
+	firstMineCount = mineCount; // Unchanging number
 		
 	notif.innerHTML = "Start by clicking any cell!";
 		
-	table.innerHTML = "";
+	table.innerHTML = ""; // Erase table
 
 	init();
 	
@@ -139,7 +142,7 @@ function init() {
 function floodFill(node) { // node is number, cellN is corresponding DOM element
 
 	var north = node > gridSize;               		// not 8, 7, 6, 5, 4, 3, 2, 1
-	var south = node < cellCount - gridSize + 1;	// not 57, 58, 59, 60, 61, 62, 63, 64
+	var south = node < cellCount - gridSize + 1;		// not 57, 58, 59, 60, 61, 62, 63, 64
 	var east = node % gridSize !== 0;          		// not 8, 16, 24, 32, 40, 48, 56, 64
 	var west = (node - 1) % gridSize !== 0;    		// not 1, 9, 17, 25, 33, 41, 49, 57
 		
@@ -260,6 +263,14 @@ function sweep(event) {
 		
 		if (event.target.classList.contains("mine")) {
 			
+			if (firstClick) { // Prevents first click to be on mine
+			
+				update();
+				
+				return;
+			
+			}
+			
 			notif.innerHTML = "Stepped on a mine, you lose!";
 			
 			event.target.classList.remove("hidden");
@@ -267,6 +278,8 @@ function sweep(event) {
 			end = true;
 			
 		} else {
+			
+			firstClick = false;
 			
 			floodFill(NumId);
 			
