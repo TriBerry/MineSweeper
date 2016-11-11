@@ -230,6 +230,12 @@ function sweep(event) {
 	var NumId = Number(event.target.id.slice(4));
 	
 	if (event.which === 3) { // right-click
+	
+		if (event.target.classList.contains("nearby") && !(event.target.classList.contains("hidden"))) { // if visible number
+			
+			return;
+			
+		}
 		
 		if (event.target.classList.contains("mine")) { // if mine
 			
